@@ -11,12 +11,13 @@ while type(N) != int:
     except ValueError:
         print('Неправильно ввели')
         N = input('Введите целое число N: ')
-if N <= 0:
-    print('Неправильно ввели')
-    N = input('Введите целое положительное  число N: ')
+    if int(N) <= 0:
+        print('Неправильно ввели')
+        N = input('Введите целое положительное  число N: ')
 
 while k <= N:
     k += 0.1
     proizv *= k
 
 print('Произведение = ', proizv)
+
