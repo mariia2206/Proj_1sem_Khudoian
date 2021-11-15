@@ -14,9 +14,9 @@ while type(A) != int:
     except ValueError:
         print('Неправильно ввели')
         A = input('Введите целое число A: ')
-    if int(A) <= 0:
-        print('Неправильно ввели')
-        A = input('Введите целое положительное  число A: ')
+        if int(A) <= 0:
+            print('Неправильно ввели')
+            A = input('Введите целое положительное  число A: ')
 
 while type(B) != int:
     try:
@@ -24,9 +24,9 @@ while type(B) != int:
     except ValueError:
         print('Неправильно ввели')
         B = input('Введите целое число B: ')
-    if int(B) <= 0:
-        print('Неправильно ввели')
-        B = input('Введите целое положительное  число B: ')
+        if int(B) <= 0:
+            print('Неправильно ввели')
+            B = input('Введите целое положительное  число B: ')
 
 while type(C) != int:
     try:
@@ -34,9 +34,9 @@ while type(C) != int:
     except ValueError:
         print('Неправильно ввели')
         C = input('Введите целое число C: ')
-    if int(C) <= 0:
-        print('Неправильно ввели')
-        C = input('Введите целое положительное  число C: ')
+        if int(C) <= 0:
+            print('Неправильно ввели')
+            C = input('Введите целое положительное  число C: ')
 k = 0
 while A - C >= 0:
     A -= C
@@ -45,3 +45,4 @@ while A - C >= 0:
         B2 -= C
         k +=1
 print ('Количество квадратов: ' ,k)
+
