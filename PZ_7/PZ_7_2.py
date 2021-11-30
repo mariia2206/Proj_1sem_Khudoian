@@ -4,6 +4,9 @@
 
 
 stroka = input('Введите строку, содержащую хотя бы 1 пробел: ')
+
+
 a = stroka.count(' ') > 1
 result = a * stroka.split()[1]
+
 print('Подстрока: ', result)
