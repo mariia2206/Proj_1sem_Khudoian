@@ -7,6 +7,5 @@ print('Начальный словарь:', d)
 
 a = sorted(d, reverse=True)
 b = sorted(d.values(), reverse=True)
-
 print('Отсортированный по убыванию словарь: ')
 print(dict(zip(a,b)))
