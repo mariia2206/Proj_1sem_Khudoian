@@ -1,26 +1,31 @@
 from tkinter import *
+from tkinter.font import BOLD
+from tkinter.ttk import Combobox
+
 
 root = Tk()
-root.title("Форма регистрации")
-root.geometry('505x680+200+200')
-
-img = PhotoImage(file='icon.png')
-l=Label(image=img).place(x=1,y=100)
-
-Button(text="Sign Up",width=15,height=2,bg='#00AA72',fg='white',font='arial 18').place(x=17,y=17)
-Button(text="Log In",width=15,height=2,bg='grey',fg='white',font='arial 18').place(x=260,y=17)
-
-Label(text="Sign Up for Free",width=25,fg='#0000aa',font='arial 25').place(x=17,y=150)
-
-Label(text="First Name",width=8,fg='#0000aa',font='arial 8').place(x=17,y=220)
-Label(text="Last Name",width=8,fg='#0000aa',font='arial 8').place(x=260,y=220)
-Entry(width=10, font='arial 28').place(x=17,y=250)
-Label(text="Email Adress",width=12,fg='#0000aa',font='arial 8').place(x=17,y=303)
-Entry(width=10, font='arial 28').place(x=260,y=250)
-Entry(width=22, font='arial 28').place(x=17,y=330)
-Label(text="Set A Password",width=12,fg='#0000aa',font='arial 8').place(x=17,y=385)
-Entry(width=22, font='arial 28').place(x=17,y=405)
-
-Button(text="GET STARTED",width=19,height=1,bg='#00AA72',fg='white',font='arial 30').place(x=17,y=500)
-
+root.geometry('799x747')
+root['bg'] = 'white'
+Canvas(root, bg='white', height=750, width=550).place(x=130, y=-10)
+Label(text="Contact Form", bg='white',fg='black',font='arial 22').place(x=150,y=0)
+Label(text="Name", bg='white', fg='black',font=('arial', 12, BOLD)).place(x=145,y=65)
+Entry(textvariable=StringVar(value='First & Last Name'), bd=2, width=56, fg='gray', font='arial 12').place(x=145,y=95)
+Label(text="Email", bg='white',fg='black',font=('arial', 12 ,BOLD)).place(x=145,y=150)
+Entry(textvariable=StringVar(value='Email'), bd=2, width=56, fg='gray', font='arial 12').place(x=145,y=175)
+Label(text="Phone Number", bg='white',fg='black',font=('arial', 12 ,BOLD)).place(x=145,y=225)
+Entry(textvariable=StringVar(value='Phone Number'), bd=2, width=56, fg='gray', font='arial 12').place(x=145,y=255)
+Label(text="Subject", bg='white',fg='black',font=('arial', 12 ,BOLD)).place(x=145,y=305)
+combo = Combobox(root, width=40, values=['Math','Biology','Chemistry','English'])
+combo.current(0)
+combo.place(x=145, y=335)
+Label(text="Leave us a few words", bg='white',fg='black',font=('arial', 12 ,BOLD)).place(x=145,y=385)
+Entry( bd=2, width=13, fg='gray', font='arial 53').place(x=145,y=415)
+Label(text="File Attachments", bg='white',fg='black',font=('arial', 12 ,BOLD)).place(x=145,y=515)
+Canvas(root,bg='#fff', height=30, width=512).place(x=145, y=545)
+Button(text="Choose Files").place(x=153,y=548)
+Label(text="No file chosen", bg='white',fg='gray',font='arial 11').place(x=235,y=549)
+Canvas(root, bg='#fff', height=80, width=300).place(x=145, y=595)
+Canvas(root, bg='#fff', height=25, width=25).place(x=153, y=620)
+Label(text="Im not a robot", bg='white',fg='black',font='arial 11').place(x=190,y=623)
+Button(text="Submit", width=8, fg='white', bg='#36c').place(x=145,y=690)
 root.mainloop()
