@@ -3,9 +3,10 @@ from tkinter import ttk
 
 class Child(tk.Toplevel):
     """Класс для дочернего окна"""
-    def __init__(self, root):
+    def __init__(self, root, app):
         super().__init__(root)
         self.init_child()
+        self.view = app
     def init_child(self):
         self.title('Добавить игрока')
         self.geometry('400x220+400+300')
@@ -27,10 +28,21 @@ class Child(tk.Toplevel):
         label_old.place(x=50, y=100)
         self.entry_old = ttk.Entry(self)
         self.entry_old.place(x=110, y=100)
+
+
+        label_score = tk.Label(self, text='Результат')
+        label_score.place(x=50, y=125)
+        self.entry_score = ttk.Entry(self)
+        self.entry_score.place(x=110, y=125)
+
         btn_cancel = ttk.Button(self, text='Закрыть', command=self.destroy)
         btn_cancel.place(x=300, y=170)
         self.btn_ok = ttk.Button(self, text='Добавить')
         self.btn_ok.place(x=220, y=170)
-        self.btn_ok.bind('<Button-1>')
+        self.btn_ok.bind('<Button-1>', lambda event: self.view.records(self.entry_description.get(),
+                                                                       self.entry_name.get(),
+                                                                       self.combobox.get(),
+                                                                       self.entry_old.get(),
+                                                                       self.entry_score.get()))
         self.grab_set()
         self.focus_set()
