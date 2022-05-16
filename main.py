@@ -14,48 +14,58 @@ class Main(tk.Frame):
         self.view_records()
 
     def init_main(self):
-        toolbar = tk.Frame(bg='#a0dea0', bd=4)
+        toolbar = tk.Frame(bg='#ecd8e9', bd=4)
         toolbar.pack(side=tk.TOP, fill=tk.X)
 
         self.add_img = tk.PhotoImage(file="BD/11.gif")
-        self.btn_open_dialog = tk.Button(toolbar, text='Добавить игрока', command=self.open_dialog, bg='#5da130', bd=0,
+        self.btn_open_dialog = tk.Button(toolbar, text='Добавить игрока', command=self.open_dialog, bg='#c38bbf', width=125, bd=0,
                                     compound=tk.TOP, image=self.add_img)
         self.btn_open_dialog.pack(side=tk.LEFT)
 
         self.update_img = tk.PhotoImage(file="BD/12 .gif")
-        btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#5da130',
+        btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#c38bbf',width=125,
                                     bd=0, compound=tk.TOP, image=self.update_img)
         btn_edit_dialog.pack(side=tk.LEFT)
 
-        self.search_img = tk.PhotoImage(file="BD/13.gif")
+        self.delete_img = tk.PhotoImage(file="BD/13.gif")
+        btn_delete = tk.Button(toolbar, text="Удалить запись", command=self.delete_records, bg='#c38bbf', width=125,
+                               bd=0, compound=tk.TOP, image=self.delete_img)
+        btn_delete.pack(side=tk.LEFT)
+
+        self.search_img = tk.PhotoImage(file="BD/14.gif")
         btn_search = tk.Button(toolbar, text="Поиск записи",
-                               command=self.open_search_dialog, bg='#5da130',
+                               command=self.open_search_dialog, bg='#c38bbf', width=125,
                                bd=0, compound=tk.TOP, image=self.search_img)
         btn_search.pack(side=tk.LEFT)
 
-        self.tree = ttk.Treeview(self, columns=('user_id', 'name', 'sex', 'old', 'score'), height=15, show='headings')
+        self.refresh_img = tk.PhotoImage(file="BD/15.gif")
+        btn_refresh = tk.Button(toolbar, text="Обновить экран", command=self.view_records, bg='#c38bbf', width=125,
+                                bd=0, compound=tk.TOP, image=self.refresh_img)
+        btn_refresh.pack(side=tk.LEFT)
 
-        self.tree.column('user_id', width=50, anchor=tk.CENTER)
-        self.tree.column('name', width=180, anchor=tk.CENTER)
-        self.tree.column('sex', width=140, anchor=tk.CENTER)
-        self.tree.column('old', width=140, anchor=tk.CENTER)
-        self.tree.column('score', width=140, anchor=tk.CENTER)
+        self.tree = ttk.Treeview(self, columns=('full_name_master','clients_full_name','type_of_cleaning','cost','discount'), height=15, show='headings')
 
-        self.tree.heading('user_id', text='ID')
-        self.tree.heading('name', text='Имя игрока')
-        self.tree.heading('sex', text='Пол игрока')
-        self.tree.heading('old', text='Возраст игрока')
-        self.tree.heading('score', text='Результат игрока')
+        self.tree.column('full_name_master', width=100, anchor=tk.CENTER)
+        self.tree.column('clients_full_name', width=140, anchor=tk.CENTER)
+        self.tree.column('type_of_cleaning', width=140, anchor=tk.CENTER)
+        self.tree.column('cost', width=140, anchor=tk.CENTER)
+        self.tree.column('discount', width=140, anchor=tk.CENTER)
+
+        self.tree.heading('full_name_master', text='ФИО мастера')
+        self.tree.heading('clients_full_name', text='ФИО клиента')
+        self.tree.heading('type_of_cleaning', text='Тип чистки')
+        self.tree.heading('cost', text='Стоимость')
+        self.tree.heading('discount', text='Скидка')
 
         self.tree.pack()
 
-    def records(self, user_id, name, sex, old, score):
-        self.db.insert_data(user_id, name, sex, old, score)
+    def records(self, full_name_master, clients_full_name,type_of_cleaning, cost, discount):
+        self.db.insert_data(full_name_master, clients_full_name, type_of_cleaning, cost, discount)
         self.view_records()
 
-    def update_record(self, user_id, name, sex, old, score):
+    def update_record(self, full_name_master, clients_full_name, type_of_cleaning, cost, discount):
         self.db.cur.execute("""UPDATE users SET user_id=?, name=?, sex=?, old=?, score=? WHERE user_id=?""",
-                            (user_id, name, sex, old, score, self.tree.set(self.tree.selection()[0], '#1')))
+                            (full_name_master, clients_full_name, type_of_cleaning,cost, discount, self.tree.set(self.tree.selection()[0], '#1')))
         self.db.con.commit()
 
         self.view_records()
@@ -64,6 +74,14 @@ class Main(tk.Frame):
         self.db.cur.execute("""SELECT * FROM users""")
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
+
+
+    def delete_records(self):
+        for selection_item in self.tree.selection():
+            self.db.cur.execute("""DELETE FROM users WHERE full_name_master=?""", (self.tree.set(selection_item, '#1'),))
+        self.db.con.commit()
+        self.view_records()
+
 
     def search_records(self, score):
         score = (score,)
@@ -128,10 +146,8 @@ class Child(tk.Toplevel):
         self.btn_ok = ttk.Button(self, text='Добавить')
         self.btn_ok.place(x=220, y=170)
         self.btn_ok.bind('<Button-1>', lambda event: self.view.records(self.entry_description.get(),
-                                                                       self.entry_name.get(),
-                                                                       self.combobox.get(),
-                                                                       self.entry_old.get(),
-                                                                       self.entry_score.get()))
+                                                                       self.entry_name.get(), self.combobox.get(),
+                                                                       self.entry_old.get(), self.entry_score.get()))
 
         self.grab_set()
         self.focus_set()
@@ -184,19 +200,19 @@ class Search(tk.Toplevel):
 class DB:
     def __init__(self):
 
-        with sq.connect('BD/saper.db') as self.con:
+        with sq.connect('uslugi.db') as self.con:
             self.cur = self.con.cursor()
             self.cur.execute("""CREATE TABLE IF NOT EXISTS users (
-                user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                sex INTEGER NOT NULL DEFAULT 1,
-                old INTEGER,
-                score INTEGER
+                full_name_master TEXT NOT NULL,
+                clients_full_name TEXT NOT NULL,
+                type_of_cleaning TEXT NOT NULL,
+                cost INTEGER,
+                discount INTEGER
                 )""")
 
-    def insert_data(self, user_id, name, sex, old, score):
-        self.cur.execute("""INSERT INTO users(user_id, name, sex, old, score) VALUES (?, ?, ?, ?, ?)""",
-                             (user_id, name, sex, old, score))
+    def insert_data(self, full_name_master, clients_full_name, type_of_cleaning, cost, discount):
+        self.cur.execute("""INSERT INTO users(full_name_master, clients_full_name, type_of_cleaning, cost, discount) VALUES (?, ?, ?, ?, ?)""",
+                             (full_name_master, clients_full_name, type_of_cleaning,  cost, discount))
         self.con.commit()
 
 if __name__ == "__main__":
@@ -204,7 +220,7 @@ if __name__ == "__main__":
     db = DB()
     app = Main(root)
     app.pack()
-    root.title("Работа с базой данных Сапер")
+    root.title("Химчистка")
     root.geometry("650x450+300+200")
     root.resizable(False, False)
     root.mainloop()
