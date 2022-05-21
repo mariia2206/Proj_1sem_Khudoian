@@ -23,7 +23,7 @@ class Main(tk.Frame):
         self.btn_open_dialog.pack(side=tk.LEFT)
 
         self.update_img = tk.PhotoImage(file="BD/12 .gif")
-        btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#c38bbf',width=184,
+        btn_edit_dialog = tk.Button(toolbar, text="Редактировать", command=self.open_update_dialog, bg='#c38bbf', width=184,
                                     bd=0, compound=tk.TOP, image=self.update_img)
         btn_edit_dialog.pack(side=tk.LEFT)
 
@@ -43,7 +43,7 @@ class Main(tk.Frame):
                                 bd=0, compound=tk.TOP, image=self.refresh_img)
         btn_refresh.pack(side=tk.LEFT)
 
-        self.tree = ttk.Treeview(self, columns=('id','full_name_master','clients_full_name','type_of_cleaning','cost','discount'), height=15, show='headings')
+        self.tree = ttk.Treeview(self, columns=('id', 'full_name_master', 'clients_full_name', 'type_of_cleaning', 'cost', 'discount'), height=15, show='headings')
 
         self.tree.column('id', width=40, anchor=tk.CENTER)
         self.tree.column('full_name_master', width=220, anchor=tk.CENTER)
@@ -61,13 +61,13 @@ class Main(tk.Frame):
 
         self.tree.pack()
 
-    def records(self, id, full_name_master, clients_full_name,type_of_cleaning, cost, discount):
+    def records(self, id, full_name_master, clients_full_name, type_of_cleaning, cost, discount):
         self.db.insert_data(id, full_name_master, clients_full_name, type_of_cleaning, cost, discount)
         self.view_records()
 
     def update_record(self, id, full_name_master, clients_full_name, type_of_cleaning, cost, discount):
         self.db.cur.execute("""UPDATE uslugi1 SET id=?, full_name_master=?, clients_full_name=?, type_of_cleaning=?, cost=?, discount=? WHERE id=?""",
-                            (id, full_name_master, clients_full_name, type_of_cleaning,cost, discount, self.tree.set(self.tree.selection()[0], '#1')))
+                            (id, full_name_master, clients_full_name, type_of_cleaning, cost, discount, self.tree.set(self.tree.selection()[0], '#1')))
         self.db.con.commit()
 
         self.view_records()
@@ -119,7 +119,7 @@ class Child(tk.Toplevel):
         label_description = tk.Label(self, text='id')
         label_description.place(x=50, y=0)
         self.entry_description = ttk.Entry(self)
-        self.entry_description.place(x=130, y=0, width=100)
+        self.entry_description.place(x=130, y=0, width=126)
 
         label_description = tk.Label(self, text='ФИО мастера')
         label_description.place(x=50, y=25)
@@ -135,7 +135,7 @@ class Child(tk.Toplevel):
         label_sex.place(x=50, y=75)
         self.combobox = ttk.Combobox(self, values=[u'Сухая', u'Аквачистка', u'Ручная', u'Углеводородная'])
         self.combobox.current(0)
-        self.combobox.place(x=130, y=75)
+        self.combobox.place(x=130, y=75, width=126)
 
         label_old = tk.Label(self, text='Стоимость')
         label_old.place(x=50, y=100)
@@ -236,6 +236,6 @@ if __name__ == "__main__":
     app = Main(root)
     app.pack()
     root.title("Химчистка")
-    root.geometry("950x450+300+200")
+    root.geometry("950x400+300+200")
     root.resizable(False, False)
     root.mainloop()
